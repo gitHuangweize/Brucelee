@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bruce Lee | The Official Fan Site</title>
+    <style>
+      /* Global Minimalist Reset */
+      :root {
+        --bg-color: #F7F7F0; /* Warm Off-White */
+        --text-color: #1A1A1A; /* Deep Ink Charcoal */
+        --accent-color: #C8AA5B; /* Saffron Gold */
+        --secondary-accent-color: #993333; /* Deep Terracotta */
+        --font-main: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      }
+      
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-family: var(--font-main);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+        transition: color 0.3s ease;
+      }
+
+      a:hover {
+        color: var(--accent-color);
+      }
+
+      /* Custom Scrollbar for Chrome/Safari/Webkit */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg-color);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #ccc;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--accent-color);
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
