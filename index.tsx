@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
 import { createRoot } from 'react-dom/client';
-import { ArrowDown, Quote, Play, ExternalLink, Send, Sparkles, X, Globe } from 'lucide-react';
+import { ArrowDown, Quote, Play, ExternalLink, Send, Sparkles, X, Globe, Menu } from 'lucide-react';
 
 // --- Configuration ---
 const COLORS = {
@@ -424,42 +424,90 @@ const Resources = () => {
 // --- Navigation ---
 const Navbar = () => {
   const { t, toggleLang, lang } = useContext(LangContext);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, padding: '20px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(247, 247, 240, 0.95)', backdropFilter: 'blur(5px)', zIndex: 100 }}>
-      <div style={{ fontWeight: 900, letterSpacing: '-1px', fontSize: '1.2rem' }}>BRUCE LEE</div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '30px' }}>
-        <div style={{ display: 'flex', gap: '30px', fontSize: '0.9rem', fontWeight: 600 }}>
-          <a href="#journey" style={{ textTransform: 'uppercase' }}>{t.nav.journey}</a>
-          <a href="#philosophy" style={{ textTransform: 'uppercase' }}>{t.nav.philosophy}</a>
-          <a href="#legend" style={{ textTransform: 'uppercase' }}>{t.nav.legend}</a>
-          <a href="#resources" style={{ textTransform: 'uppercase' }}>{t.nav.resources}</a>
+    <>
+      <nav style={{ 
+        position: 'fixed', top: 0, left: 0, right: 0, 
+        padding: '15px 20px', // Reduced padding for mobile default
+        display: 'flex', justifyContent: 'space-between', alignItems: 'center', 
+        background: 'rgba(247, 247, 240, 0.95)', backdropFilter: 'blur(5px)', zIndex: 100,
+        transition: 'all 0.3s ease'
+      }} className="navbar">
+        <div style={{ fontWeight: 900, letterSpacing: '-1px', fontSize: '1.2rem', zIndex: 102 }}>BRUCE LEE</div>
+        
+        {/* Desktop Nav */}
+        <div className="desktop-nav" style={{ display: 'flex', alignItems: 'center', gap: '30px' }}>
+          <div style={{ display: 'flex', gap: '30px', fontSize: '0.9rem', fontWeight: 600 }}>
+            <a href="#journey" style={{ textTransform: 'uppercase' }}>{t.nav.journey}</a>
+            <a href="#philosophy" style={{ textTransform: 'uppercase' }}>{t.nav.philosophy}</a>
+            <a href="#legend" style={{ textTransform: 'uppercase' }}>{t.nav.legend}</a>
+            <a href="#resources" style={{ textTransform: 'uppercase' }}>{t.nav.resources}</a>
+          </div>
+          <button 
+            onClick={toggleLang}
+            style={{ 
+              background: 'none', border: `1px solid ${COLORS.text}`, borderRadius: '4px', 
+              padding: '5px 10px', cursor: 'pointer', fontSize: '0.8rem', 
+              display: 'flex', alignItems: 'center', gap: '5px', color: COLORS.text
+            }}
+          >
+            <Globe size={14} /> {lang === 'en' ? '中文' : 'EN'}
+          </button>
         </div>
-        <button 
-          onClick={toggleLang}
-          style={{ 
-            background: 'none', 
-            border: `1px solid ${COLORS.text}`, 
-            borderRadius: '4px', 
-            padding: '5px 10px', 
-            cursor: 'pointer',
-            fontSize: '0.8rem',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '5px',
-            color: COLORS.text
-          }}
-        >
-          <Globe size={14} /> {lang === 'en' ? '中文' : 'EN'}
-        </button>
-      </div>
-    </nav>
+
+        {/* Mobile Menu Button */}
+        <div className="mobile-menu-btn" style={{ display: 'none', alignItems: 'center', gap: '15px' }}>
+           <button 
+            onClick={toggleLang}
+            style={{ 
+              background: 'none', border: `1px solid ${COLORS.text}`, borderRadius: '4px', 
+              padding: '4px 8px', cursor: 'pointer', fontSize: '0.7rem', 
+              display: 'flex', alignItems: 'center', gap: '4px', color: COLORS.text
+            }}
+          >
+            <Globe size={12} /> {lang === 'en' ? '中文' : 'EN'}
+          </button>
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)} style={{ background: 'none', border: 'none', cursor: 'pointer', zIndex: 102 }}>
+            {isMenuOpen ? <X size={24} color={COLORS.text} /> : <Menu size={24} color={COLORS.text} />}
+          </button>
+        </div>
+      </nav>
+
+      {/* Mobile Menu Overlay */}
+      {isMenuOpen && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          background: COLORS.bg, zIndex: 101,
+          display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
+          gap: '40px', fontSize: '1.5rem', fontWeight: 600
+        }}>
+          <a href="#journey" onClick={() => setIsMenuOpen(false)}>{t.nav.journey}</a>
+          <a href="#philosophy" onClick={() => setIsMenuOpen(false)}>{t.nav.philosophy}</a>
+          <a href="#legend" onClick={() => setIsMenuOpen(false)}>{t.nav.legend}</a>
+          <a href="#resources" onClick={() => setIsMenuOpen(false)}>{t.nav.resources}</a>
+        </div>
+      )}
+
+      <style>{`
+        @media (min-width: 768px) {
+          .navbar { padding: 20px 40px !important; }
+          .mobile-menu-btn { display: none !important; }
+          .desktop-nav { display: flex !important; }
+        }
+        @media (max-width: 767px) {
+          .desktop-nav { display: none !important; }
+          .mobile-menu-btn { display: flex !important; }
+        }
+      `}</style>
+    </>
   );
 };
 
 // --- Main App ---
 const App = () => {
-  const [lang, setLang] = useState<LangType>('en');
+  const [lang, setLang] = useState<LangType>('zh');
 
   const toggleLang = () => {
     setLang(prev => prev === 'en' ? 'zh' : 'en');
