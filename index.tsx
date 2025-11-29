@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
 import { createRoot } from 'react-dom/client';
-import { GoogleGenAI } from "@google/genai";
 import { ArrowDown, Quote, Play, ExternalLink, Send, Sparkles, X, Globe } from 'lucide-react';
 
 // --- Configuration ---
@@ -135,10 +134,6 @@ const TRANSLATIONS = {
 type LangType = 'en' | 'zh';
 const LangContext = createContext<{ lang: LangType; toggleLang: () => void; t: typeof TRANSLATIONS['en'] }>(null!);
 
-// --- Gemini API Client ---
-// Note: In a real app, ensure process.env.API_KEY is handled securely.
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
 // --- Components ---
 
 const Section = ({ id, children, className = "" }: { id: string; children?: React.ReactNode; className?: string }) => (
@@ -235,13 +230,17 @@ const AskSifu = () => {
       : "你是李小龙截拳道哲学的专家。回答要简练、深刻，并使用与水、空和直接性相关的隐喻。语气：哲学、冷静、智慧。请用中文回答。";
 
     try {
-      // Use Gemini to answer as a Jeet Kune Do master
-      const result = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents: query,
-        config: { systemInstruction }
+      // Call our secure backend function
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: query, systemInstruction })
       });
-      setResponse(result.text || "");
+      
+      if (!res.ok) throw new Error('API request failed');
+      
+      const data = await res.json();
+      setResponse(data.response || "");
     } catch (e) {
       setResponse(lang === 'en' ? "The mind is cluttered. Try again later." : "心绪杂乱，稍后再试。");
     } finally {
