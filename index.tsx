@@ -432,7 +432,7 @@ const Navbar = () => {
         position: 'fixed', top: 0, left: 0, right: 0, 
         padding: '15px 20px', // Reduced padding for mobile default
         display: 'flex', justifyContent: 'space-between', alignItems: 'center', 
-        background: 'rgba(247, 247, 240, 0.95)', backdropFilter: 'blur(5px)', zIndex: 100,
+        background: 'rgba(247, 247, 240, 0.95)', backdropFilter: 'blur(5px)', zIndex: 110,
         transition: 'all 0.3s ease'
       }} className="navbar">
         <div style={{ fontWeight: 900, letterSpacing: '-1px', fontSize: '1.2rem', zIndex: 102 }}>BRUCE LEE</div>
@@ -477,12 +477,15 @@ const Navbar = () => {
 
       {/* Mobile Menu Overlay */}
       {isMenuOpen && (
-        <div style={{
-          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-          background: COLORS.bg, zIndex: 101,
-          display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
-          gap: '40px', fontSize: '1.5rem', fontWeight: 600
-        }}>
+        <div 
+          onClick={() => setIsMenuOpen(false)}
+          style={{
+            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+            background: COLORS.bg, zIndex: 100,
+            display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
+            gap: '40px', fontSize: '1.5rem', fontWeight: 600
+          }}
+        >
           <a href="#journey" onClick={() => setIsMenuOpen(false)}>{t.nav.journey}</a>
           <a href="#philosophy" onClick={() => setIsMenuOpen(false)}>{t.nav.philosophy}</a>
           <a href="#legend" onClick={() => setIsMenuOpen(false)}>{t.nav.legend}</a>
